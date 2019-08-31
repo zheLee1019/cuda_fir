@@ -91,12 +91,22 @@ __global__ void DoFIRFilt(const float* NUM, const int NUMLEN, const float* data,
 extern "C" void fir_cuda(const float* NUM, int NUMLEN, float* data, int datalen, float* outputdata)
 {
 	int delay = (NUMLEN - 1) / 2;
-	float* inputdata = new float[delay + datalen]();
+	float* inputdata = new float[2*delay + datalen]();
 	int i = 0;
-	int inputlen = delay + datalen;
-	while (i < datalen)
+	int inputlen = 2*delay + datalen;
+	while (i < delay)
 	{
-		inputdata[i] = data[i];
+		inputdata[i] = data[0];
+		++i;
+	}
+	while (i < datalen+delay)
+	{
+		inputdata[i] = data[i-delay];
+		++i;
+	}
+	while (i < inputlen)
+	{
+		inputdata[i] = data[datalen - 1];
 		++i;
 	}
 	float* tempnum = new float[NUMLEN];
