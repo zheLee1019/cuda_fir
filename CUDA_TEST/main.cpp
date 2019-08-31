@@ -50,7 +50,7 @@ int main()
 		data[i] = dt[i];
 	}
 
-	clock_t start, end;
+	clock_t start, end;//
 
 	double* bd = new double[1250];
 	double* ad = new double[1250];
